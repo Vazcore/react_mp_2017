@@ -2,26 +2,29 @@ import React from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
 import SearchBar from './search/searchBar';
 import FilmHeader from './film/filmHeader';
-import Paper from 'material-ui/Paper';
 
 import { HeaderBlock } from '../style/header';
+import CommonStyles from '../style/common';
 import { Grid, Row, Col } from 'react-bootstrap';
 
-
 const Header = () => (
-  <header>    
-    <Paper style={HeaderBlock.block} zDepth={2}>
-      <div style={HeaderBlock.wrapper}>
-        <nav className="sdsdssss" style={HeaderBlock.navigation}>
-          <Link to='/'>netflixroulette</Link>
-        </nav>
+  <header style={HeaderBlock.block}>
+    <div style={HeaderBlock.wrapper}>
+      <Grid>
+      <Row className="show-grid">
+        <Col xs={12} md={12}>
+          <nav className="sdsdssss" style={HeaderBlock.navigation}>
+            <Link style={CommonStyles.nav_link} to='/'>netflixroulette</Link>
+          </nav>
+        </Col>
+      </Row>
         <Switch>
           <Route exact path='/' component={SearchBar} />
           <Route path='/search' component={SearchBar} />
           <Route path='/film' component={FilmHeader} />
         </Switch>
-      </div>
-    </Paper>
+      </Grid>
+    </div>
   </header>
 )
 

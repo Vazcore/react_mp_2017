@@ -1,19 +1,21 @@
 import React from 'react'
 import Header from './header'
 import Main from './main'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { Grid, Row, Col } from 'react-bootstrap';
 
-const Content = () => (
-  <div>
-    <Header />
-    <Main />
-  </div>
-);
+const paddingReset = {paddingLeft: 0, paddingRight: 0};
 
 const App = () => (
-  <MuiThemeProvider>
-    <Content />
-  </MuiThemeProvider>
+  <Grid fluid={true} style={paddingReset}>
+    <Row className="show-grid">
+      <Col xs={12} md={12}>
+        <Header />
+      </Col>
+      <Col xs={12} md={12}>
+        <Main />
+      </Col>
+    </Row>
+  </Grid>
 )
 
 export default App
