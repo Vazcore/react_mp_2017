@@ -12,8 +12,8 @@ class SearchBar extends React.Component {
     super(props);
     this.label = 'Find your movie';
     this.searchOptions = [
-      'title',
-      'director'
+      {active: true, name: 'title'},
+      {active: false, name: 'director'}
     ];
   }
 
@@ -26,7 +26,7 @@ class SearchBar extends React.Component {
   }
 
   search(searchWord) {
-    
+    // todo search
   }
 
   render() {

@@ -9,7 +9,7 @@ class RadioLabelList extends React.Component {
   }
 
   renderOptions(options) {
-    return options.map((option, index) => <RadioLabel key={index} />)
+    return options.map((option, index) => <RadioLabel key={index} option={option} />)
   }
 
   render() {
@@ -17,7 +17,7 @@ class RadioLabelList extends React.Component {
       <div className="form-group" style={Object.assign({},commonStyles.formGroup, commonStyles.overflowHidden)}>
         {
           this.props.label && 
-          <Label label={this.props.label} />
+          <Label label={this.props.label} style={commonStyles.padding_right_sm} />
         }
         {this.renderOptions(this.props.options)}
       </div>

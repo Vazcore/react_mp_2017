@@ -1,4 +1,5 @@
 const addtionalColor = '#F55263'
+const primarColor = '#3C3C3C'
 
 
 export default {
@@ -58,5 +59,30 @@ export default {
   },
   relative: {
     position: 'relative'
+  },
+  optionLabel: {
+    display: 'inline-block',
+    padding: '1px 20px 1px 20px',
+    margin: '0 7px 0 7px',
+    color: 'white',
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
+    border: '1px solid transparent',
+    borderRadius: '5px',
+    backgroundColor: primarColor,
+    cursor: 'pointer'
+  },
+  optionLabelActive: {
+    backgroundColor: addtionalColor
+  },
+  padding_right_m: {
+    paddingRight: '20px'
+  },
+  padding_right_sm: {
+    paddingRight: '10px'
+  },
+  subheader: {
+    backgroundColor: '#F5F5F5',
+    minHeight: '40px'
   }
 }
