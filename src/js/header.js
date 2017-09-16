@@ -13,7 +13,7 @@ const Header = () => (
       <Grid>
       <Row className="show-grid">
         <Col xs={12} md={12}>
-          <nav className="sdsdssss" style={HeaderBlock.navigation}>
+          <nav style={HeaderBlock.navigation}>
             <Link style={CommonStyles.nav_link} to='/'>netflixroulette</Link>
           </nav>
         </Col>

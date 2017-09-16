@@ -1,17 +1,31 @@
-var path = require('path');
+var path = require('path')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: __dirname + '/src/js/index.js',
+  entry: {
+    source: __dirname + '/src/js/index.js',
+    resource: __dirname + '/src/js/vendor.js'
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
-    publicPath: '/dist/'
+    filename: '[name].bundle.[hash].js',
+    publicPath: '/'
   },
   devServer: {
-    contentBase: './public',
+    contentBase: './dist',
     inline: true,
     port: 3001
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: './public/index.html',
+      inject: 'body',
+      chunksSortMode: function(a, b) {
+        return (a.names[0] > b.names[0])? 1 : -1;
+      }
+    })
+  ],
   module: {
     rules: [
       {

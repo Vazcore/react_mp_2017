@@ -4,7 +4,8 @@
   "description": "EPAM React Mentoring Program",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"webpack-dev-server\" \"nodemon server/server.js\""
+    "start": "concurrently \"webpack-dev-server\" \"nodemon server/server.js\"",
+    "build": "webpack -p"
   },
   "keywords": [
     "react"
@@ -21,6 +22,7 @@
     "css-loader": "^0.28.7",
     "express": "^4.15.4",
     "file-loader": "^0.11.2",
+    "html-webpack-plugin": "^2.30.1",
     "jest": "^20.0.4",
     "nodemon": "^1.11.0",
     "react-router-dom": "^4.2.2",
