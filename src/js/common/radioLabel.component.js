@@ -30,7 +30,7 @@ class RadioLabel extends React.Component {
         onMouseEnter={this.onHover}
         onMouseLeave={this.onUnHover}
         onClick={this.chooseOption}
-        style={Object.assign({}, commonStyles.optionLabel, (this.state.active ? commonStyles.optionLabelActive : {}) )}>
+        style={Object.assign({}, this.props.optionStyle, (this.state.active ? this.props.activeOptionStyle : {}) )}>
         {this.props.option.name}
       </span>
     )

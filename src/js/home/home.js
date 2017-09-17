@@ -4,7 +4,7 @@ import commonStyles from '../../style/common'
 
 const Home = () => (
   <div style={commonStyles.formGroup}>
-    <h4>Home</h4>
+    <div style={commonStyles.panelDescription}>No films found</div>
   </div>
 )
 

@@ -1,6 +1,7 @@
 const addtionalColor = '#F55263'
 const primarColor = '#3C3C3C'
-
+const noteColor = '#C8C8C8'
+const textColor = '#4E4E4E'
 
 export default {
   nav_link: {
@@ -10,7 +11,8 @@ export default {
   label: {
     color: 'white',
     fontSize: '14px',
-    padding: '10px 0 5px 0'
+    padding: '10px 0 5px 0',
+    textTransform: 'uppercase'
   },
   formGroup: {
     paddingLeft: '10px',
@@ -43,7 +45,9 @@ export default {
     overflow: 'hidden'
   },
   block: {
-    padding: '10px 0 10px 0'
+    paddingTop: '10px',
+    paddingBottom: '10px',
+    paddingLeft:'10px'
   },
   pageBlock: {
     minWidth: '200px'
@@ -60,7 +64,7 @@ export default {
   relative: {
     position: 'relative'
   },
-  optionLabel: {
+  searchLabel: {
     display: 'inline-block',
     padding: '1px 20px 1px 20px',
     margin: '0 7px 0 7px',
@@ -72,7 +76,7 @@ export default {
     backgroundColor: primarColor,
     cursor: 'pointer'
   },
-  optionLabelActive: {
+  searchLabelActive: {
     backgroundColor: addtionalColor
   },
   padding_right_m: {
@@ -83,6 +87,39 @@ export default {
   },
   subheader: {
     backgroundColor: '#F5F5F5',
-    minHeight: '40px'
+    minHeight: '40px',
+    paddingTop: '10px'
+  },
+  panelDescription: {
+    marginTop: '100px',
+    color: noteColor,
+    fontSize: '34px',
+    textAlign: 'center'
+  },
+  footer: {
+    padding: '10px',
+    backgroundColor: primarColor,
+    color: 'white',
+    position: 'fixed',
+    bottom: '0',
+    left: '0',
+    width: '100%'
+  },
+  text_block: {
+    fontWeight: 'bold',
+    color: textColor
+  },
+  sortOption: {
+    color: textColor,
+    fontWeight: 'bold',
+    padding: '0 10px 0 10px',
+    cursor: "pointer"
+  },
+  activeSortLabel: {
+    color: addtionalColor
+  },
+  sortLabel: {
+    color: textColor,
+    fontWeight: 'bold'
   }
 }

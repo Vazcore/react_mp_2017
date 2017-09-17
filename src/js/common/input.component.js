@@ -11,7 +11,7 @@ class InputComponent extends React.Component {
       <div className="form-group" style={commonStyles.formGroup}>
         {
           this.props.label && 
-          <Label label={this.props.label} htmlFor={this.props.id} />
+          <Label label={this.props.label} style={commonStyles.label} htmlFor={this.props.id} />
         }
         <div style={commonStyles.relative}>
           <input type={this.props.type}

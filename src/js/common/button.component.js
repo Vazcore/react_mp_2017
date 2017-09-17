@@ -7,7 +7,7 @@ class ButtonComponent extends React.Component {
   }
   render() {
     return (
-      <div className="form-group" style={Object.assign({},commonStyles.formGroup, commonStyles.overflowHidden)}>
+      <div className="form-group">
         <input type={this.props.type}
           className="form-control"
           style={this.props.componentStyle}

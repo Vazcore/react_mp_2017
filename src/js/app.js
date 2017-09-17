@@ -2,6 +2,7 @@ import React from 'react'
 import { Grid, Row, Col } from 'react-bootstrap'
 import Header from './header'
 import Main from './main'
+import Footer from './footer'
 
 const paddingReset = {paddingLeft: 0, paddingRight: 0};
 
@@ -14,6 +15,7 @@ const App = () => (
       <Col xs={12} md={12}>
         <Main />
       </Col>
+      <Footer />
     </Row>
   </Grid>
 )
