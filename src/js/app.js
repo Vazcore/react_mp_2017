@@ -1,15 +1,23 @@
 import React from 'react'
+import { Grid, Row, Col } from 'react-bootstrap'
 import Header from './header'
 import Main from './main'
-import { BrowserRouter } from 'react-router-dom'
+import Footer from './footer'
+
+const paddingReset = {paddingLeft: 0, paddingRight: 0};
 
 const App = () => (
-  <BrowserRouter>
-    <div>
-      <Header />
-      <Main />
-    </div>
-  </BrowserRouter>
+  <Grid fluid={true} style={paddingReset}>
+    <Row className="show-grid">
+      <Col xs={12} md={12}>
+        <Header />
+      </Col>
+      <Col xs={12} md={12}>
+        <Main />
+      </Col>
+      <Footer />
+    </Row>
+  </Grid>
 )
 
 export default App
