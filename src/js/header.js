@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
 import SearchBar from './search/searchBar';
 import FilmHeader from './film/filmHeader';
+import FilmSubHeader from './film/filmSubHeader';
 import SubHeaderSearchInfo from './search/searchInfo'
 
 import { HeaderBlock } from '../style/header';
@@ -15,18 +16,17 @@ const Header = () => (
     <div style={HeaderBlock.wrapper}>
       <Grid style={Object.assign({}, paddingReset, CommonStyles.block)}>
         <Row className="show-grid">
-          <Col xs={12} md={12}>
+          <Col xs={6} md={6} style={paddingReset}>
             <nav style={HeaderBlock.navigation}>
               <Link style={CommonStyles.nav_link} to='/'>netflixroulette</Link>
             </nav>
           </Col>
+          <Switch>
+            <Route exact path='/' component={SearchBar} />
+            <Route path='/search' component={SearchBar} />
+            <Route path='/film' component={FilmHeader} />
+          </Switch>
         </Row>
-        
-        <Switch>
-          <Route exact path='/' component={SearchBar} />
-          <Route path='/search' component={SearchBar} />
-          <Route path='/film' component={FilmHeader} />
-        </Switch>
       </Grid>
       <div style={CommonStyles.subheader}>
         <Grid>
@@ -34,7 +34,7 @@ const Header = () => (
             <Col xs={12} md={12}>
             <Switch>            
               <Route path='/search' component={SubHeaderSearchInfo} />
-              <Route path='/film' component={FilmHeader} />
+              <Route path='/film' component={FilmSubHeader} />
             </Switch>
             </Col>
           </Row>

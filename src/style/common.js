@@ -1,11 +1,8 @@
-const addtionalColor = '#F55263'
-const primarColor = '#3C3C3C'
-const noteColor = '#C8C8C8'
-const textColor = '#4E4E4E'
+import { colors } from './variables'
 
 export default {
   nav_link: {
-    color: addtionalColor,
+    color: colors.addtionalColor,
     fontWeight: 'bold'
   },
   label: {
@@ -28,11 +25,11 @@ export default {
     opacity: 0.8,
     color: 'white',
     borderColor: 'black',
-    borderBottom: '2px solid ' + addtionalColor
+    borderBottom: '2px solid ' + colors.addtionalColor
   },
   searchButton: {
-    backgroundColor: addtionalColor,
-    borderColor: addtionalColor,
+    backgroundColor: colors.addtionalColor,
+    borderColor: colors.addtionalColor,
     color: 'white',
     fontWeight: 'bold',
     width: '200px',
@@ -73,11 +70,11 @@ export default {
     fontWeight: 'bold',
     border: '1px solid transparent',
     borderRadius: '5px',
-    backgroundColor: primarColor,
+    backgroundColor: colors.primarColor,
     cursor: 'pointer'
   },
   searchLabelActive: {
-    backgroundColor: addtionalColor
+    backgroundColor: colors.addtionalColor
   },
   padding_right_m: {
     paddingRight: '20px'
@@ -92,34 +89,45 @@ export default {
   },
   panelDescription: {
     marginTop: '100px',
-    color: noteColor,
+    color: colors.noteColor,
     fontSize: '34px',
     textAlign: 'center'
-  },
-  footer: {
-    padding: '10px',
-    backgroundColor: primarColor,
-    color: 'white',
-    position: 'fixed',
-    bottom: '0',
-    left: '0',
-    width: '100%'
-  },
+  }, 
   text_block: {
     fontWeight: 'bold',
-    color: textColor
+    color: colors.textColor
   },
   sortOption: {
-    color: textColor,
+    color: colors.textColor,
     fontWeight: 'bold',
     padding: '0 10px 0 10px',
     cursor: "pointer"
   },
   activeSortLabel: {
-    color: addtionalColor
+    color: colors.addtionalColor
   },
   sortLabel: {
-    color: textColor,
+    color: colors.textColor,
     fontWeight: 'bold'
+  },
+  paddingReset: {paddingLeft: 0, paddingRight: 0},
+  inlineBlock: {
+    display: 'inline-block',
+    marginRight: '30px'
+  },
+  marginTop: {
+    marginTop: '40px'
+  },
+  ButtonLink: {
+    backgroundColor: 'white',
+    color: colors.addtionalColor,
+    padding: '5px 20px',
+    border: '1px solid white',
+    borderRadius: '2px',
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
+    textDecoration: 'none',
+    float: 'right',
+    marginTop: '10px'
   }
 }

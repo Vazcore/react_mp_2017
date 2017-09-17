@@ -5,7 +5,7 @@ export const HeaderBlock = {
     display: 'block',
     width: '100%',
     backgroundImage: "url("+backgroundImage+")",
-    backgroundPosition: '25px'
+    backgroundPosition: '325px'
   },
   wrapper: {
     backgroundColor: 'rgba(0,0,0,0.8)'

@@ -12,15 +12,14 @@ class SubHeaderSearchInfo extends React.Component {
       {active: false, name: 'release date'},
       {active: true, name: 'rating'}
     ];
-    console.log(movies[2])
   }
   render() {
     return (
-      <Row className="show-grid">
-        <Col xs={6} md={6}>
+      <div>
+        <Col xs={12} sm={4} md={4} style={commonStyles.block}>
           <span style={commonStyles.text_block}>{movies.length} movies found </span>
         </Col>
-        <Col xs={6} md={6}>
+        <Col xs={12} sm={8} md={8} style={commonStyles.block}>
         <RadioLabelList options={this.searchOptions}
           optionStyle={commonStyles.sortOption}
           activeOptionStyle={commonStyles.activeSortLabel}
@@ -28,7 +27,7 @@ class SubHeaderSearchInfo extends React.Component {
           labelStyle={Object.assign({}, commonStyles.padding_right_sm, commonStyles.sortLabel)}
           label="Sort by" />
         </Col>
-      </Row>
+      </div>
     )
   }
 }

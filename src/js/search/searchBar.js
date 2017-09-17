@@ -1,6 +1,6 @@
 import React from 'react'
 import { Redirect } from 'react-router';
-import { Row, Col, FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import InputComponent from '../common/input.component'
 import ButtonComponent from '../common/button.component'
 import RadioLabelList from '../common/radioLabelList.component'
@@ -65,7 +65,7 @@ class SearchBar extends React.Component {
                   label="SEARCH BY" />
               </Col>
               <Col xs={12} md={4} style={commonStyles.block}>
-                <ButtonComponent type="button"
+                <ButtonComponent type="submit"
                   componentStyle={commonStyles.searchButton}
                   buttonValue="SEARCH" />
               </Col>

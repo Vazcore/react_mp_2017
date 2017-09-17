@@ -25,7 +25,8 @@
 body {
   margin: 0;
   position:relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  padding-bottom: 70px; 
 }
 
 /**
