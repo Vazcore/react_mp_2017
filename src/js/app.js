@@ -1,21 +1,58 @@
 import React from 'react'
-import { Grid } from 'react-bootstrap'
-import Content from './content'
-
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-import allReducers from './reducers/index';
+import { Grid, Row, Col } from 'react-bootstrap'
+import Header from './header'
+import Main from './main'
+import Footer from './footer'
+import { withRouter } from 'react-router-dom'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { setSearchCriteria, setSortCriteria, changeSearchCriteria, changeSortCriteria } from './actions/criterias'
+import {search, sort } from './search/criterias'
 
 const paddingReset = {paddingLeft: 0, paddingRight: 0};
 
-const store = createStore(allReducers);
+class App extends React.Component {
+  constructor(props) {
+    super(props)
 
-const App = () => (
-  <Provider store={store}>
-    <Grid fluid={true} style={paddingReset}>
-      <Content />
-    </Grid>
-  </Provider>
-)
+    this.props.changeSearchCriteria(search[0])
+    this.props.changeSortCriteria(sort[1])
 
-export default App
+    this.props.setSearchCriteria(search)
+    this.props.setSortCriteria(sort)
+  }
+
+  render() {
+    return (
+      <Grid fluid={true} style={paddingReset}>
+        <Row className="show-grid">
+          <Col xs={12} md={12}>
+            <Header />
+          </Col>
+          <Col xs={12} md={12}>
+            <Main />
+          </Col>
+          <Footer />
+        </Row>
+      </Grid>
+    )
+  }
+}
+
+function matchDispatchToProps(dispatch) {
+  return bindActionCreators({
+    setSearchCriteria,
+    setSortCriteria,
+    changeSearchCriteria,
+    changeSortCriteria
+  }, dispatch);
+}
+
+function mapStateToProps(state) {
+  return {
+    movies: state.movies
+  };
+}
+
+
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(App))

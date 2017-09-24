@@ -6,11 +6,19 @@ class InputComponent extends React.Component {
   constructor(props) {
     super(props)
     this.onChangeInput = this.onChangeInput.bind(this)
+    this.state = {value: ''}
+  }
+
+  componentWillReceiveProps(props) {
+    this.setState({value: props.initValue})
+    this.props.onChangeElement({id: this.props.id, value: props.initValue})
   }
 
   onChangeInput(event) {
     // todo validation
-    this.props.onChangeElement({id: this.props.id, value: event.target.value})
+    var value = event.target.value;
+    this.setState({value})
+    this.props.onChangeElement({id: this.props.id, value})
   }
 
   render() {
@@ -25,6 +33,7 @@ class InputComponent extends React.Component {
             onChange={this.onChangeInput}
             className="form-control"
             style={this.props.componentStyle}
+            value={this.state.value}
             id={this.props.id}
             placeholder={this.props.placeholder}/>
           {

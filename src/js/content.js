@@ -3,6 +3,7 @@ import { Grid, Row, Col } from 'react-bootstrap'
 import Header from './header'
 import Main from './main'
 import Footer from './footer'
+import { withRouter } from 'react-router-dom'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { setSearchCriteria, setSortCriteria, changeSearchCriteria, changeSortCriteria } from './actions/criterias'
@@ -49,4 +50,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps, matchDispatchToProps)(Content)
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(Content))

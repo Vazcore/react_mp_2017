@@ -13,6 +13,7 @@ class RadioLabelList extends React.Component {
       (option, index) => <RadioLabel key={index}
                           chooseOption={this.props.chooseOption}
                           optionStyle={style}
+                          activeOption={this.props.activeOption}
                           activeOptionStyle={activeStyle}
                           option={option} />
     )

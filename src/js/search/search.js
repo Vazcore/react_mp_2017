@@ -1,11 +1,12 @@
 import React from 'react'
 import FilmList from '../film/filmList'
 import commonStyles from '../../style/common'
-
+import { withRouter } from 'react-router-dom'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { searchMovie } from '../actions/movies'
-import { changeSortCriteria } from '../actions/criterias'
+import { searchMovie, selectMovie } from '../actions/movies'
+import { changeKeyword } from '../actions/keyword'
+import { changeSearchCriteria } from '../actions/criterias'
 
 // todo remake movies via redux
 import movies from '../../../public/test_data/movies.json'
@@ -17,35 +18,34 @@ class Search extends React.Component {
     this.keyword = this.props.match.params.keyword
     this.criteria = this.props.match.params.criteria
     this.state= {movies: []}
-    debugger;
   }
 
   componentDidMount() {
-    //this.searchMovies(this.props.match.params.keyword)
-    
+    this.searchMovies(this.props.match.params.keyword)
   }
 
-  // componentDidUpdate() {  
-  //   if (this.props.match.params.keyword !== this.keyword || this.criteria !== this.props.match.params.criteria) {
-  //     this.keyword = this.props.match.params.keyword
-  //     this.criteria = this.props.match.params.criteria
-  //     this.searchMovies(this.keyword)
-  //   }
-  // }
+  componentDidUpdate(props) {
+    if (this.props.match.params.keyword !== this.keyword || this.criteria !== this.props.match.params.criteria) {
+      this.keyword = this.props.match.params.keyword
+      this.criteria = this.props.match.params.criteria
+      this.searchMovies(this.keyword)
+    }
+  }
 
   searchMovies(keyword) {
-    // if (!this.criteria) {
-    //   const criteris = this.props.searchCriteria.length ? this.props.searchCriteria : this.searchOptions
-    //   this.criteria = criteris.filter(option => option.active === true)[0].prop
-    // }
-    // const foundMovies = movies.filter(movie => {
-    //   return movie[this.criteria.prop].search(new RegExp(keyword, "i")) !== -1
-    // })
-    // this.setState({movies: foundMovies})
-    // this.props.searchMovie(foundMovies)
+    if (!this.criteria) {
+      this.criteria = this.props.search_active_criteria.prop
+    }
+    const foundMovies = movies.filter(movie => {
+      return movie[this.criteria].search(new RegExp(keyword, "i")) !== -1
+    })
+    this.props.searchMovie(foundMovies)
+    this.props.changeSearchCriteria(this.props.search_criteria.filter(c=>c.prop===this.criteria)[0])
+    this.props.changeKeyword(this.keyword)
   }
 
   onChoose(movie) {
+    this.props.selectMovie(movie)
     this.props.history.push('/film/' + encodeURIComponent(movie.show_title))
     window.scrollTo(0, 0)
   }
@@ -61,16 +61,19 @@ class Search extends React.Component {
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
     searchMovie,
-    changeSortCriteria
+    changeSearchCriteria,
+    changeKeyword,
+    selectMovie
   }, dispatch);
 }
 
 function mapStateToProps(state) {
   return {
     movies: state.movies,
-    search_criteria: state.search_criteria
+    search_criteria: state.search_criteria,
+    search_active_criteria: state.search_active_criteria,
   };
 }
 
 
-export default connect(mapStateToProps, matchDispatchToProps)(Search)
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(Search))

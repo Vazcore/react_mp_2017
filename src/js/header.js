@@ -4,7 +4,6 @@ import SearchBar from './search/searchBar';
 import FilmHeader from './film/filmHeader';
 import FilmSubHeader from './film/filmSubHeader';
 import SubHeaderSearchInfo from './search/searchInfo'
-
 import { HeaderBlock } from '../style/header';
 import CommonStyles from '../style/common';
 import { Grid, Row, Col } from 'react-bootstrap';
@@ -15,7 +14,7 @@ class Header extends React.Component {
   render() {
     return (
       <header style={HeaderBlock.block}>
-     ` <div style={HeaderBlock.wrapper}>
+        <div style={HeaderBlock.wrapper}>
         <Grid style={Object.assign({}, paddingReset, CommonStyles.block)}>
           <Row className="show-grid">
             <Col xs={6} md={6} style={paddingReset}>
@@ -26,7 +25,7 @@ class Header extends React.Component {
             <Switch>
               <Route exact path='/' component={SearchBar} />
               <Route path='/search/:keyword/:criteria' component={SearchBar} />
-              <Route path='/film' component={FilmHeader} />
+              <Route path='/film/:title' component={FilmHeader} />
             </Switch>
           </Row>
         </Grid>
