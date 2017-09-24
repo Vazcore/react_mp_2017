@@ -1,7 +1,7 @@
-export default (state = null, action) => {
+export default (state = {}, action) => {
   switch (action.type) {
     case 'select':
-      return action.payload
+      return Object.assign({}, action.payload)
   
     default:
       return state
