@@ -1,9 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import App from './app.js';
 
 render(
-  <BrowserRouter>
+  <Router>
     <App />
-  </BrowserRouter>, document.querySelector('#app'));
+  </Router>, document.querySelector('#app'));

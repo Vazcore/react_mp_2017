@@ -1,23 +1,21 @@
 import React from 'react'
-import { Grid, Row, Col } from 'react-bootstrap'
-import Header from './header'
-import Main from './main'
-import Footer from './footer'
+import { Grid } from 'react-bootstrap'
+import Content from './content'
+
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import allReducers from './reducers/index';
 
 const paddingReset = {paddingLeft: 0, paddingRight: 0};
 
+const store = createStore(allReducers);
+
 const App = () => (
-  <Grid fluid={true} style={paddingReset}>
-    <Row className="show-grid">
-      <Col xs={12} md={12}>
-        <Header />
-      </Col>
-      <Col xs={12} md={12}>
-        <Main />
-      </Col>
-      <Footer />
-    </Row>
-  </Grid>
+  <Provider store={store}>
+    <Grid fluid={true} style={paddingReset}>
+      <Content />
+    </Grid>
+  </Provider>
 )
 
 export default App
