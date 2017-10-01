@@ -5,14 +5,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { selectMovie } from '../actions/movies'
 
-// todo remake movies via redux
-import movies from '../../../public/test_data/movies.json'
-
 class Film extends React.PureComponent {
   constructor(props) {
     super(props)
     this.onChoose = this.onChoose.bind(this)
   }
+
   onChoose(movie) {
     this.props.selectMovie(movie)
     this.props.history.push('/film/' + encodeURIComponent(movie.show_title))
@@ -21,7 +19,7 @@ class Film extends React.PureComponent {
   render() {
     return (
       <div>
-        <FilmList movies={movies} onChoose={this.onChoose} />
+        <FilmList movies={this.props.moviesByDirector} onChoose={this.onChoose} />
       </div>
     )
   }
@@ -34,7 +32,10 @@ function matchDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    selectedMovie: state.selectedMovie,
+    moviesByDirector: state.moviesByDirector,
+  };
 }
 
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(Film))
