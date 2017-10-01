@@ -14,6 +14,7 @@ module.exports = {
   devServer: {
     contentBase: './dist',
     inline: true,
+    historyApiFallback: true,
     port: 3001
   },
   plugins: [

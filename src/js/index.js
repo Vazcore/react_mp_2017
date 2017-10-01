@@ -1,9 +1,15 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import App from './app.js';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import allReducers from './reducers/index';
+
+const store = createStore(allReducers);
 
 render(
-  <BrowserRouter>
+  <Provider store={store}>
+  <Router>
     <App />
-  </BrowserRouter>, document.querySelector('#app'));
+  </Router></Provider>, document.querySelector('#app'));

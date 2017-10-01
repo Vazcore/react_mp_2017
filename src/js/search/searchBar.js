@@ -4,6 +4,11 @@ import { Row, Col } from 'react-bootstrap'
 import InputComponent from '../common/input.component'
 import ButtonComponent from '../common/button.component'
 import RadioLabelList from '../common/radioLabelList.component'
+import { withRouter } from 'react-router-dom'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { searchMovie } from '../actions/movies'
+import { changeSearchCriteria } from '../actions/criterias'
 
 import ArrowEnterIcon from '../../../public/img/arrow_enter.png'
 import commonStyles from '../../style/common'
@@ -12,35 +17,34 @@ class SearchBar extends React.Component {
   constructor(props) {
     super(props);
     this.label = 'Find your movie';
-    this.searchOptions = [
-      {active: true, name: 'title'},
-      {active: false, name: 'director'}
-    ];
+    this.seachInputId = 'searchInput'
+    this.form = {}   
 
     this.searchUrl = 'search'
 
-    this.state = {
-      submit: false
-    };
-
     this.search = this.search.bind(this)
+    this.onChangeElement = this.onChangeElement.bind(this)
+    this.changeSearchOption = this.changeSearchOption.bind(this)
   }
 
-  onKeyUp(event) {
-    var searchWord;
-    if (event.keyCode === 13) {
-      searchWord = event.target.value;
-      this.search(searchWord);
-    }
+  changeSearchOption(option) {
+    this.props.changeSearchCriteria(option)
+    // if (this.form[this.seachInputId]) {
+    //   this.search(null, option)
+    // }
   }
 
-  search(event) {
-    event.preventDefault();
-    if (this.props.router) this.props.router.push('search')
-    else if (this.props.history) this.props.history.push('search')
-    
-
+  search(event, option) {
+    if (event) event.preventDefault()
+    this.props.history.push(
+      '/search/'+ encodeURIComponent(this.form[this.seachInputId]) + '/' +
+      encodeURIComponent(option.prop ? option.prop : this.props.search_active_criteria.prop)
+    );
     // todo search
+  }
+
+  onChangeElement({id, value}) {
+    this.form[id] = value
   }
 
   render() {
@@ -53,12 +57,16 @@ class SearchBar extends React.Component {
             action="/search">
             <InputComponent label={this.label}
               type="text"
+              initValue={this.props.keyword}
               componentStyle={commonStyles.searchInput}
               placeholder="Search"
+              onChangeElement={this.onChangeElement}
               icon={ArrowEnterIcon}
-              id="searchInput" />
+              id={this.seachInputId} />
               <Col xs={12} md={8} style={commonStyles.block}>
-                <RadioLabelList options={this.searchOptions}
+                <RadioLabelList options={this.props.search_criteria}
+                  chooseOption={this.changeSearchOption}
+                  activeOption={this.props.search_active_criteria}
                   optionStyle={commonStyles.searchLabel}
                   activeOptionStyle={commonStyles.searchLabelActive}
                   labelStyle={Object.assign({}, commonStyles.label, commonStyles.padding_right_sm)}
@@ -77,4 +85,21 @@ class SearchBar extends React.Component {
   }
 }
 
-export default SearchBar
+function matchDispatchToProps(dispatch) {
+  return bindActionCreators({
+    searchMovie,
+    changeSearchCriteria
+  }, dispatch);
+}
+
+function mapStateToProps(state) {
+  return {
+    movies: state.movies,
+    search_active_criteria: state.search_active_criteria,
+    search_criteria: state.search_criteria,
+    keyword: state.keyword
+  };
+}
+
+
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(SearchBar))

@@ -3,25 +3,23 @@ import commonStyles from '../../style/common'
 
 class RadioLabel extends React.Component {
   constructor(props) {
-    super(props)
-    this.state = {
-      active: this.props.option.active
-    }
+    super(props)    
 
     this.onHover = this.onHover.bind(this)
     this.onUnHover = this.onUnHover.bind(this)
+    this.chooseOption = this.chooseOption.bind(this)
   }
 
   onHover() {
-    this.setState({active: true})
+    // todo with styled
   }
 
   onUnHover() {
-    if (!this.props.option.active) this.setState({active: false})    
+    // todo with styled
   }
 
   chooseOption() {
-    // todo with redux
+    this.props.chooseOption(this.props.option)
   }
 
   render() {
@@ -30,7 +28,7 @@ class RadioLabel extends React.Component {
         onMouseEnter={this.onHover}
         onMouseLeave={this.onUnHover}
         onClick={this.chooseOption}
-        style={Object.assign({}, this.props.optionStyle, (this.state.active ? this.props.activeOptionStyle : {}) )}>
+        style={Object.assign({}, this.props.optionStyle, (this.props.option.name === this.props.activeOption.name  ? this.props.activeOptionStyle : {}) )}>
         {this.props.option.name}
       </span>
     )

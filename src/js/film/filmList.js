@@ -9,7 +9,10 @@ class FilmList extends React.Component {
   }
   
   renderList(items) {
-    return items.map(item => <FilmCard key={item.show_id} movie={item} onChoose={this.props.onChoose} />)
+    return items.map(item => {
+      item.c_id = !item.c_id ? item.show_id : item.c_id;
+      return <FilmCard key={item.c_id} movie={item} onChoose={this.props.onChoose} />
+    })
   }  
 
   render() {

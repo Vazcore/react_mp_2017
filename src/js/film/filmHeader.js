@@ -3,8 +3,12 @@ import { Link } from 'react-router-dom';
 import commonStyles from '../../style/common'
 import { Row, Col } from 'react-bootstrap'
 import filmStyles from '../../style/film'
+import { withRouter } from 'react-router-dom'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { selectMovie } from '../actions/movies'
 
-// todo remake movies via redux
+// todo remake movies via fetch
 import movies from '../../../public/test_data/movies.json'
 
 class FilmHeader extends React.Component {
@@ -12,8 +16,16 @@ class FilmHeader extends React.Component {
     super(props)
   }
   componentWillMount() {
-    // todo remake movies via redux
-    this.movie = movies[2]
+    if (this.props.selectedMovie) this.movie = this.props.selectedMovie
+    // if user hit the url from the link
+    this.foundMovie(this.props.match.params.title)
+  }
+  componentWillUpdate(props) {
+    if (props.selectedMovie) this.movie = props.selectedMovie
+  }
+  foundMovie(title) {
+    var search = movies.filter(movie => movie.show_title === title)
+    if (search.length) this.movie = search[0]
   }
   render() {
     return (
@@ -42,4 +54,16 @@ class FilmHeader extends React.Component {
   }
 }
 
-export default FilmHeader
+function matchDispatchToProps(dispatch) {
+  return bindActionCreators({
+    selectMovie
+  }, dispatch);
+}
+
+function mapStateToProps(state) {
+  return {
+    selectedMovie: state.selectedMovie
+  };
+}
+
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(FilmHeader))

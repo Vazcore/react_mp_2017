@@ -11,7 +11,9 @@ class RadioLabelList extends React.Component {
   renderOptions(options, style, activeStyle) {
     return options.map(
       (option, index) => <RadioLabel key={index}
+                          chooseOption={this.props.chooseOption}
                           optionStyle={style}
+                          activeOption={this.props.activeOption}
                           activeOptionStyle={activeStyle}
                           option={option} />
     )
