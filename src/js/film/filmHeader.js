@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { selectMovie, setMoviesByDirector } from '../actions/movies'
 import API from '../helpers/api'
+import DATES from '../helpers/dates'
 
 // todo remake movies via fetch
 import movies from '../../../public/test_data/movies.json'
@@ -31,9 +32,9 @@ class FilmHeader extends React.Component {
     }
   }
   foundMovie(title) {
-    API.findMovies('title', title)
-    .then(movies => {
-      this.movie = movies[0];
+    API.getMovieDetails(title)
+    .then(movie => {
+      this.movie = movie && movie.id ? movie : {};
       this.props.selectMovie(this.movie);
       if (this.movie.director) {
         this.foundMoviesByDirector(this.movie.director)
@@ -52,16 +53,16 @@ class FilmHeader extends React.Component {
         <Row className="show-grid">
           <Col xs={12} md={12} style={commonStyles.pageBlock}>
             <Col xs={5} sm={5} md={5}>
-              <img src={this.props.selectedMovie.poster} style={filmStyles.poster} />
+              <img src={API.imageHost + 'w300/' + this.props.selectedMovie.poster_path} style={filmStyles.poster} />
             </Col>
             <Col xs={12} sm={7} md={7} style={filmStyles.infoBlock}>
-              <p style={filmStyles.title}>{this.props.selectedMovie.show_title} <span style={filmStyles.rating}>{this.props.selectedMovie.rating}</span></p>
-              <p style={filmStyles.description}>{this.props.selectedMovie.category}</p>
+              <p style={filmStyles.title}>{this.props.selectedMovie.title} <span style={filmStyles.rating}>{this.props.selectedMovie.vote_average}</span></p>
+              <p style={filmStyles.description}>{this.props.selectedMovie.tagline}</p>
               <p style={filmStyles.info}>
-                <span style={commonStyles.inlineBlock}>{this.props.selectedMovie.release_year}</span>
-                <span style={commonStyles.inlineBlock}>{this.props.selectedMovie.runtime}</span>
+                <span style={commonStyles.inlineBlock}>{DATES.dateStringToYear(this.props.selectedMovie.release_date)}</span>
+                <span style={commonStyles.inlineBlock}>{this.props.selectedMovie.runtime} minutes</span>
               </p>
-              <p style={Object.assign({}, filmStyles.description, commonStyles.marginTop)}>{this.props.selectedMovie.summary}</p>
+              <p style={Object.assign({}, filmStyles.description, commonStyles.marginTop)}>{this.props.selectedMovie.overview}</p>
               <p style={Object.assign({}, filmStyles.category, commonStyles.marginTop)}>Director: {this.props.selectedMovie.director}</p>
               <p style={filmStyles.category}>Cast: {this.props.selectedMovie.show_cast}</p>
             </Col>

@@ -45,7 +45,7 @@ class Search extends React.Component {
 
   onChoose(movie) {
     this.props.selectMovie(movie)
-    this.props.history.push('/film/' + encodeURIComponent(movie.show_title))
+    this.props.history.push('/film/' + encodeURIComponent(movie.id))
     window.scrollTo(0, 0)
   }
   render() {
