@@ -8,6 +8,8 @@ import { searchMovie, selectMovie } from '../actions/movies'
 import { changeKeyword } from '../actions/keyword'
 import { changeSearchCriteria } from '../actions/criterias'
 import API from '../helpers/api';
+import DATES from '../helpers/dates';
+import { sort } from './criterias';
 
 class Search extends React.Component {
   constructor(props) {
@@ -36,7 +38,10 @@ class Search extends React.Component {
     }
     
     API.findMovies(this.criteria, keyword)
-    .then(movies => this.props.searchMovie(movies))
+    .then(movies => {
+      const sortedMovies = DATES.sortMovies(movies, sort[1])
+      this.props.searchMovie(sortedMovies)
+    })
     .catch(err => console.log(err))
 
     this.props.changeSearchCriteria(this.props.search_criteria.filter(c=>c.prop===this.criteria)[0])

@@ -22,3 +22,15 @@ export const moviesByDirector = (state = [], action) => {
       return state
   }
 }
+
+
+export const activeDirector = (state = {}, action) => {
+  switch (action.type) {
+
+    case 'set_active_directive':
+      return Object.assign({}, action.payload)
+  
+    default:
+      return state
+  }
+}

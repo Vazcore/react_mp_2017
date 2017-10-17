@@ -13,7 +13,7 @@ class Film extends React.PureComponent {
 
   onChoose(movie) {
     this.props.selectMovie(movie)
-    this.props.history.push('/film/' + encodeURIComponent(movie.show_title))
+    this.props.history.push('/film/' + encodeURIComponent(movie.id))
     window.scrollTo(0, 0)
   }
   render() {

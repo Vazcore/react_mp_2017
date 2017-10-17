@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { searchMovie } from '../actions/movies'
 import { changeSortCriteria } from '../actions/criterias'
+import DATES from '../helpers/dates'
 
 class SubHeaderSearchInfo extends React.Component {
   constructor(props) {
@@ -31,20 +32,11 @@ class SubHeaderSearchInfo extends React.Component {
     }
 
     this.criteria = option
-    this.searchCriteria = this.props.search_active_criteria    
+    this.searchCriteria = this.props.search_active_criteria  
 
-    const movies = this.props.movies.sort((a,b) => {
-      if (parseFloat(a[option.prop]) === parseFloat(b[option.prop])) {
-        return a.show_id < b.show_id;
-      }
-      return parseFloat(a[option.prop]) <= parseFloat(b[option.prop])
-    })
-    .map(movie=>{
-      movie.c_id = Math.random() * (9999 - 99) + 9999;
-      return movie;
-    })
-    this.props.searchMovie(movies)
+    const movies = DATES.sortMovies(this.props.movies, option)
     
+    this.props.searchMovie(movies)
   }
 
   render() {

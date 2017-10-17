@@ -11,7 +11,7 @@ class FilmSubHeader extends React.Component {
   render() {
     return (
       <Col xs={12} sm={12} md={12} style={commonStyles.block}>
-        <span style={commonStyles.text_block}>Films by {this.props.selectedMovie.director} </span>
+        <span style={commonStyles.text_block}>Films by {this.props.activeDirector.name} </span>
       </Col>
     )
   }
@@ -23,7 +23,7 @@ function matchDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
-    selectedMovie: state.selectedMovie
+    activeDirector: state.activeDirector
   };
 }
 

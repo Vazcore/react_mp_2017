@@ -19,7 +19,7 @@ class FilmList extends React.Component {
     return (
       <Grid>
         <Row className="show-grid">
-          {this.renderList(this.props.movies)}
+          {this.props.movies ? this.renderList(this.props.movies) : null}
         </Row>
       </Grid>
     )
