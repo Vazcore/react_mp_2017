@@ -4,7 +4,7 @@ export const search = [
 ]
 
 export const sort = [
-  {name: 'release date', prop: 'release_year'},
-  {name: 'rating', prop: 'rating'}
+  {name: 'release date', prop: 'release_date'},
+  {name: 'rating', prop: 'vote_average'}
 ]
 

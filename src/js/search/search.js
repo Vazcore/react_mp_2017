@@ -7,9 +7,9 @@ import { connect } from 'react-redux';
 import { searchMovie, selectMovie } from '../actions/movies'
 import { changeKeyword } from '../actions/keyword'
 import { changeSearchCriteria } from '../actions/criterias'
-
-// todo remake movies via redux
-import movies from '../../../public/test_data/movies.json'
+import API from '../helpers/api';
+import DATES from '../helpers/dates';
+import { sort } from './criterias';
 
 class Search extends React.Component {
   constructor(props) {
@@ -36,17 +36,21 @@ class Search extends React.Component {
     if (!this.criteria) {
       this.criteria = this.props.search_active_criteria.prop
     }
-    const foundMovies = movies.filter(movie => {
-      return movie[this.criteria].search(new RegExp(keyword, "i")) !== -1
+    
+    API.findMovies(this.criteria, keyword)
+    .then(movies => {
+      const sortedMovies = DATES.sortMovies(movies, sort[1])
+      this.props.searchMovie(sortedMovies)
     })
-    this.props.searchMovie(foundMovies)
+    .catch(err => console.log(err))
+
     this.props.changeSearchCriteria(this.props.search_criteria.filter(c=>c.prop===this.criteria)[0])
     this.props.changeKeyword(this.keyword)
   }
 
   onChoose(movie) {
     this.props.selectMovie(movie)
-    this.props.history.push('/film/' + encodeURIComponent(movie.show_title))
+    this.props.history.push('/film/' + encodeURIComponent(movie.id))
     window.scrollTo(0, 0)
   }
   render() {

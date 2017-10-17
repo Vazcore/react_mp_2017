@@ -36,9 +36,10 @@ class SearchBar extends React.Component {
 
   search(event, option) {
     if (event) event.preventDefault()
+    if (!this.form[this.seachInputId].length) return;
     this.props.history.push(
       '/search/'+ encodeURIComponent(this.form[this.seachInputId]) + '/' +
-      encodeURIComponent(option.prop ? option.prop : this.props.search_active_criteria.prop)
+      encodeURIComponent((option && option.prop) ? option.prop : this.props.search_active_criteria.prop)
     );
     // todo search
   }
