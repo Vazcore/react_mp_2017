@@ -1,21 +1,19 @@
 import React from 'react'
-import commonStyles from '../../style/common'
+import styled from 'styled-components'
+import { colors } from '../../style/variables'
+
+const RadioLabelStyled = styled.span`
+  &:hover {
+    background-color: ${colors.addtionalColor} !important;
+    color: white !important;
+  }
+`;
 
 class RadioLabel extends React.Component {
   constructor(props) {
     super(props)    
 
-    this.onHover = this.onHover.bind(this)
-    this.onUnHover = this.onUnHover.bind(this)
     this.chooseOption = this.chooseOption.bind(this)
-  }
-
-  onHover() {
-    // todo with styled
-  }
-
-  onUnHover() {
-    // todo with styled
   }
 
   chooseOption() {
@@ -24,13 +22,11 @@ class RadioLabel extends React.Component {
 
   render() {
     return (
-      <span className="optionLabel"
-        onMouseEnter={this.onHover}
-        onMouseLeave={this.onUnHover}
+      <RadioLabelStyled className="optionLabel"
         onClick={this.chooseOption}
         style={Object.assign({}, this.props.optionStyle, (this.props.option.name === this.props.activeOption.name  ? this.props.activeOptionStyle : {}) )}>
         {this.props.option.name}
-      </span>
+      </RadioLabelStyled>
     )
   }
 }

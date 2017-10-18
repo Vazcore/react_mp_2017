@@ -14,10 +14,7 @@ import IMG from '../helpers/img'
 // todo remake movies via fetch
 import movies from '../../../public/test_data/movies.json'
 
-const findDirector = (crewList) => {
-  const directorsResult = crewList.filter(el => el.job === 'Director');
-  return directorsResult.length > 0 ? directorsResult[0] : {}
-}
+const findDirector = DATES.findDirector;
 
 class CastInfo extends React.PureComponent {
   constructor(props) {
@@ -54,7 +51,7 @@ class FilmHeader extends React.Component {
     }
   }
   componentWillUpdate(props) {
-    if (props.selectedMovie.credits){
+    if (props.selectedMovie.credits && props.selectedMovie.credits.crew.length){
       this.foundMoviesByDirector(findDirector(props.selectedMovie.credits.crew));
     }
   }
@@ -62,7 +59,7 @@ class FilmHeader extends React.Component {
     API.getCredits(id)
     .then(castInfo => {
       this.setState({castInfo})
-      this.foundMoviesByDirector(findDirector(castInfo.crew))
+      if (castInfo.crew.length) this.foundMoviesByDirector(findDirector(castInfo.crew))
     })
   }
   foundMovie(title) {
@@ -71,18 +68,26 @@ class FilmHeader extends React.Component {
       this.movie = movie && movie.id ? movie : {};
       this.props.selectMovie(this.movie);
       this.setState({castInfo: this.movie.credits});
-      if (this.movie.credits) {
+      if (this.movie.credits && this.movie.credits.crew.length) {
         this.foundMoviesByDirector(findDirector(this.movie.credits.crew))
       }
     })
     .catch(err => console.log(err))
   }
   foundMoviesByDirector(director) {
+    if (!director.id) return;
     API.getMoviesByPerson(director.id)
     .then(movies => {
-      const allMovies = movies.crew.concat(movies.cast);
-      const moviesWithoutDuplicates = DATES.removeDuplicatesByProperty(allMovies, 'id');
-      this.props.setMoviesByDirector(moviesWithoutDuplicates)
+      if (movies.crew || movies.cast) {
+        const crew = movies.crew || [];
+        const cast = movies.cast || [];
+        const allMovies = crew.concat(cast);
+        const moviesWithoutDuplicates = DATES.removeDuplicatesByProperty(allMovies, 'id');
+        this.props.setMoviesByDirector(moviesWithoutDuplicates)
+      } else {
+        this.props.setMoviesByDirector([])
+      }
+      
       this.props.setActiveDirector(director)
     })
   }
@@ -103,7 +108,7 @@ class FilmHeader extends React.Component {
               <p style={filmStyles.description}>{this.props.selectedMovie.tagline}</p>
               <p style={filmStyles.info}>
                 <span style={commonStyles.inlineBlock}>{DATES.dateStringToYear(this.props.selectedMovie.release_date)}</span>
-                <span style={commonStyles.inlineBlock}>{this.props.selectedMovie.runtime} minutes</span>
+                {this.props.selectedMovie.runtime && <span style={commonStyles.inlineBlock}>{this.props.selectedMovie.runtime} minutes</span>}
               </p>
               <p style={Object.assign({}, filmStyles.description, commonStyles.marginTop)}>
                 {this.props.selectedMovie.overview}

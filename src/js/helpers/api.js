@@ -5,7 +5,7 @@ const searchUrl = apiHost + '/search/movie?api_key=' + apiKey + '&append_to_resp
 export default {
   imageHost: 'https://image.tmdb.org/t/p/',
   
-  findMovies: (criteria, keyword) => {
+  findMovies: (keyword) => {
     var foundMovies = [];
 
     return fetch(searchUrl + '&query=' + encodeURIComponent(keyword))
@@ -34,6 +34,10 @@ export default {
   getMoviesByPerson: (id) => {
     return fetch(apiHost + '/person/' + id + '/movie_credits?api_key=' + apiKey)
     .then(data => data.json())
+  },
+
+  searchPerson: (name) => {
+    return fetch(apiHost + '/search/person?query='+name+'&api_key=' + apiKey)
+    .then(data => data.json())
   }
-  
 }

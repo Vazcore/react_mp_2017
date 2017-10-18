@@ -1,5 +1,7 @@
 import React from 'react'
-import commonStyles from '../../style/common'
+import {
+  Label as LabelStyled
+} from '../../styled/common'
 import Label from './label.component'
 import RadioLabel from './radioLabel.component'
 
@@ -24,7 +26,7 @@ class RadioLabelList extends React.Component {
       <div style={this.props.listStyle}>
         {
           this.props.label && 
-          <Label label={this.props.label} style={this.props.labelStyle} />
+          <Label styledComponent={LabelStyled} label={this.props.label} style={this.props.labelStyle} />
         }
         {this.renderOptions(this.props.options, this.props.optionStyle, this.props.activeOptionStyle)}
       </div>

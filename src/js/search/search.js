@@ -36,16 +36,46 @@ class Search extends React.Component {
     if (!this.criteria) {
       this.criteria = this.props.search_active_criteria.prop
     }
+    if (this.criteria === 'director') {
+      this.searchByDirector(keyword)
+    } else {
+      this.searchByTitle(keyword)
+    }
     
-    API.findMovies(this.criteria, keyword)
+    this.props.changeSearchCriteria(this.props.search_criteria.filter(c=>c.prop===this.criteria)[0])
+    this.props.changeKeyword(this.keyword)
+  }
+
+  searchByDirector(name) {
+    const director = this.props.activeDirector;
+    if (director.id) {
+      this.getMoviesByDirector(director);
+    } else {
+      API.searchPerson(name)
+      .then(response => {
+        if (response.results && response.results.length) {
+          const person = response.results[0];
+          this.getMoviesByDirector(person);
+        }
+      })
+    }
+  }
+
+  getMoviesByDirector(director) {
+    API.getMoviesByPerson(director.id)
+    .then(movies => {
+      const moviesByDirector = DATES.findDirector(movies.crew, true)
+      if (moviesByDirector.length) this.props.searchMovie(moviesByDirector)
+    })
+  }
+
+  searchByTitle(title) {
+    API.findMovies(title)
     .then(movies => {
       const sortedMovies = DATES.sortMovies(movies, sort[1])
       this.props.searchMovie(sortedMovies)
     })
     .catch(err => console.log(err))
-
-    this.props.changeSearchCriteria(this.props.search_criteria.filter(c=>c.prop===this.criteria)[0])
-    this.props.changeKeyword(this.keyword)
   }
 
   onChoose(movie) {
@@ -76,6 +106,7 @@ function mapStateToProps(state) {
     movies: state.movies,
     search_criteria: state.search_criteria,
     search_active_criteria: state.search_active_criteria,
+    activeDirector: state.activeDirector
   };
 }
 

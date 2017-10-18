@@ -51,4 +51,9 @@ DATES.removeDuplicatesByProperty = (movies, prop) => {
   })
 }
 
+DATES.findDirector = (crewList, isAll) => {
+  const directorsResult = crewList.filter(el => el.job === 'Director');
+  return directorsResult.length > 0 ? isAll === true ? directorsResult : directorsResult[0] : {}
+}
+
 export default DATES;
