@@ -30,7 +30,7 @@ class CastInfo extends React.PureComponent {
         <p style={Object.assign({}, filmStyles.category, commonStyles.marginTop)}>
           Director: {findDirector(this.props.castInfo.crew).name}
         </p>
-        <p style={filmStyles.category}>Cast: {this.getTextOfCast(this.props.castInfo.cast)}</p>
+        {this.props.castInfo.cast && <p style={filmStyles.category}>Cast: {this.getTextOfCast(this.props.castInfo.cast)}</p>}
       </div>
     )
   }
@@ -42,7 +42,7 @@ class FilmHeader extends React.Component {
     this.state = {};
   }
   componentWillMount() {
-    if (this.props.selectedMovie.id) {
+    if (this.props.selectedMovie && this.props.selectedMovie.id) {
       this.getCredits(this.props.selectedMovie.id)
     }
     else {

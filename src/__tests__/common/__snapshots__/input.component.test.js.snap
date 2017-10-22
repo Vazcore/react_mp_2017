@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Input component Input should render 1`] = `
+<div
+  className="form-group sc-bdVaJa iYQQjG"
+>
+  <label />
+  <div
+    className="sc-bwzfXH ghuPdm"
+  >
+    <input
+      autoComplete="off"
+      className="form-control"
+      disabled={false}
+      id={1}
+      onChange={[Function]}
+      placeholder="Title1"
+      style={undefined}
+      type="text"
+      value=""
+    />
+    <img
+      className="sc-ifAKCX jSEKDO"
+      src="path1"
+    />
+  </div>
+</div>
+`;

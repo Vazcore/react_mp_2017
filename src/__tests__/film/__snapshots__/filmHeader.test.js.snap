@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FilmHeader component FilmHeader should render 1`] = `
+<div>
+  <span>
+    Search
+  </span>
+  <span>
+    <span>
+      <span>
+        <span>
+          path1
+        </span>
+      </span>
+      <span>
+        <p
+          style={
+            Object {
+              "color": "#F55263",
+              "fontSize": "34px",
+            }
+          }
+        >
+          Title1
+          <span
+            style={
+              Object {
+                "border": "1px solid #99C16F",
+                "borderRadius": "50px",
+                "color": "#99C16F",
+                "display": "inline-block",
+                "fontSize": "20px",
+                "height": "50px",
+                "padding": "10px",
+                "textAlign": "center",
+                "verticalAlign": "middle",
+                "width": "50px",
+              }
+            }
+          />
+        </p>
+        <p
+          style={
+            Object {
+              "color": "#C8C8C8",
+              "fontSize": "19px",
+            }
+          }
+        />
+        <p
+          style={
+            Object {
+              "color": "white",
+              "fontSize": "19px",
+              "fontWeight": "bold",
+            }
+          }
+        >
+          <span
+            style={
+              Object {
+                "display": "inline-block",
+                "marginRight": "30px",
+              }
+            }
+          />
+        </p>
+        <p
+          style={
+            Object {
+              "color": "#C8C8C8",
+              "fontSize": "19px",
+              "marginTop": "40px",
+            }
+          }
+        />
+      </span>
+    </span>
+  </span>
+</div>
+`;
