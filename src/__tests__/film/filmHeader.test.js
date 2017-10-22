@@ -15,6 +15,7 @@ const movie = {
   }
 };
 
+jest.mock('../../js/actions/movies', () => ({}))
 
 jest.mock('react-redux', () => {
   return {
@@ -36,27 +37,13 @@ jest.mock('react-bootstrap', () => {
     Col: (props) => <span>{props.children}</span>
   };
 });
-jest.mock('../../js/helpers/api', () => {
-  const movie = {
-    id: 1,
-    poster_path: 'path1',
-    title: 'Title1',
-    release_date: new Date(2017, 1, 1),
-    category: 'Horor',
-    credits: {
-      crew: []
-    }
-  };
-  return {
-    getMoviesByPerson: jest.fn(),
-    getMovieDetails: () => new Promise((resolve, reject) => resolve(movie)),
-    getCredits: () => new Promise((resolve, reject) => resolve({}))
-  };
-});
+jest.mock('../../js/helpers/api');
+
 jest.mock('../../js/helpers/dates', () => {
   return {
-    dateStringToYear: jest.fn(),
-    findDirector: () => ({})
+    dateStringToYear: (date) => date.toString(),
+    findDirector: () => ({id:'director'}),
+    removeDuplicatesByProperty: (movies, id) => movies
   };
 });
 jest.mock('../../js/helpers/img', () => {
@@ -70,7 +57,8 @@ const props = {
     params: { title: 'Title1' }
   },
   selectMovie: jest.fn(),
-  selectedMovie: movie
+  selectedMovie: movie,
+  setMoviesByDirector: jest.fn()
 };
 
 describe('FilmHeader component', () => {  
@@ -84,10 +72,21 @@ describe('FilmHeader component', () => {
 });
 
 describe('FilmHeader mount', () => {
-  // const component = mount(
-  //   <FilmHeader {...props}  />
-  // );
-  // const instance = component.instance();
-  // instance.foundMovie('Title2');
-  // expect(instance.movie).toBe(movie.id);
+  let component, instance;
+  beforeAll(() => {
+    component = mount(
+      <FilmHeader {...props}  />
+    );
+    instance = component.instance();
+  });
+  afterAll(() => {
+    jest.resetAllMocks();
+  })
+  test('should set movie', () => {
+    const foundMoviesByDirectorSpy = jest.spyOn(instance, 'foundMoviesByDirector');
+    return instance.foundMovie('Title2').then(movie => {
+      expect(instance.movie).toEqual(movie);
+      expect(foundMoviesByDirectorSpy).toHaveBeenCalledWith({id:'director'});
+    });
+  });
 });

@@ -63,7 +63,7 @@ class FilmHeader extends React.Component {
     })
   }
   foundMovie(title) {
-    API.getMovieDetails(title)
+    return API.getMovieDetails(title)
     .then(movie => {
       this.movie = movie && movie.id ? movie : {};
       this.props.selectMovie(this.movie);
@@ -71,12 +71,13 @@ class FilmHeader extends React.Component {
       if (this.movie.credits && this.movie.credits.crew.length) {
         this.foundMoviesByDirector(findDirector(this.movie.credits.crew))
       }
+      return this.movie;
     })
     .catch(err => console.log(err))
   }
   foundMoviesByDirector(director) {
     if (!director.id) return;
-    API.getMoviesByPerson(director.id)
+    return API.getMoviesByPerson(director.id)
     .then(movies => {
       if (movies.crew || movies.cast) {
         const crew = movies.crew || [];
