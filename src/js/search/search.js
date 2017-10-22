@@ -7,9 +7,9 @@ import { connect } from 'react-redux';
 import { searchMovie, selectMovie } from '../actions/movies'
 import { changeKeyword } from '../actions/keyword'
 import { changeSearchCriteria } from '../actions/criterias'
-
-// todo remake movies via redux
-import movies from '../../../public/test_data/movies.json'
+import API from '../helpers/api';
+import DATES from '../helpers/dates';
+import { sort } from './criterias';
 
 class Search extends React.Component {
   constructor(props) {
@@ -36,17 +36,51 @@ class Search extends React.Component {
     if (!this.criteria) {
       this.criteria = this.props.search_active_criteria.prop
     }
-    const foundMovies = movies.filter(movie => {
-      return movie[this.criteria].search(new RegExp(keyword, "i")) !== -1
-    })
-    this.props.searchMovie(foundMovies)
+    if (this.criteria === 'director') {
+      this.searchByDirector(keyword)
+    } else {
+      this.searchByTitle(keyword)
+    }
+    
     this.props.changeSearchCriteria(this.props.search_criteria.filter(c=>c.prop===this.criteria)[0])
     this.props.changeKeyword(this.keyword)
   }
 
+  searchByDirector(name) {
+    const director = this.props.activeDirector;
+    if (director.id) {
+      this.getMoviesByDirector(director);
+    } else {
+      API.searchPerson(name)
+      .then(response => {
+        if (response.results && response.results.length) {
+          const person = response.results[0];
+          this.getMoviesByDirector(person);
+        }
+      })
+    }
+  }
+
+  getMoviesByDirector(director) {
+    API.getMoviesByPerson(director.id)
+    .then(movies => {
+      const moviesByDirector = DATES.findDirector(movies.crew, true)
+      if (moviesByDirector.length) this.props.searchMovie(moviesByDirector)
+    })
+  }
+
+  searchByTitle(title) {
+    API.findMovies(title)
+    .then(movies => {
+      const sortedMovies = DATES.sortMovies(movies, sort[1])
+      this.props.searchMovie(sortedMovies)
+    })
+    .catch(err => console.log(err))
+  }
+
   onChoose(movie) {
     this.props.selectMovie(movie)
-    this.props.history.push('/film/' + encodeURIComponent(movie.show_title))
+    this.props.history.push('/film/' + encodeURIComponent(movie.id))
     window.scrollTo(0, 0)
   }
   render() {
@@ -72,6 +106,7 @@ function mapStateToProps(state) {
     movies: state.movies,
     search_criteria: state.search_criteria,
     search_active_criteria: state.search_active_criteria,
+    activeDirector: state.activeDirector
   };
 }
 

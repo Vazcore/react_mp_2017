@@ -1,6 +1,19 @@
 import React from 'react'
-import commonStyles from '../../style/common'
+import {
+  FormGroup,
+  RelativeDiv,
+  IconImage,
+  Label as LabelStyled
+} from '../../styled/common'
+import styled from 'styled-components'
 import Label from './label.component'
+import DropDownList from './dropdownList'
+
+const AbsoluteRightIcon = IconImage.extend`
+  position: absolute;
+  right: 20px;
+  top: 7px;
+`;
 
 class InputComponent extends React.Component {
   constructor(props) {
@@ -23,25 +36,30 @@ class InputComponent extends React.Component {
 
   render() {
     return (
-      <div className="form-group" style={commonStyles.formGroup}>
+      <FormGroup className="form-group">
         {
           this.props.label && 
-          <Label label={this.props.label} style={commonStyles.label} htmlFor={this.props.id} />
+          <Label label={this.props.label} styledComponent={LabelStyled} htmlFor={this.props.id} />
         }
-        <div style={commonStyles.relative}>
+        <RelativeDiv>
           <input type={this.props.type}
             onChange={this.onChangeInput}
             className="form-control"
+            autoComplete={this.props.autocomplete}
             style={this.props.componentStyle}
             value={this.state.value}
             id={this.props.id}
+            disabled={this.props.disabled === true}
             placeholder={this.props.placeholder}/>
           {
             this.props.icon &&
-            <img src={this.props.icon} style={Object.assign({}, commonStyles.icon, commonStyles.absoluteRight)} />
+            <AbsoluteRightIcon src={this.props.icon} />
           }
-        </div>
-      </div>
+          {this.props.dropdownList && this.props.dropdownList.length &&
+            <DropDownList onDropDownItemClick={this.props.onDropDownItemClick} list={this.props.dropdownList}></DropDownList>
+          }
+        </RelativeDiv>
+      </FormGroup>
     )
   }
 }

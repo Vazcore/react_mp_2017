@@ -1,5 +1,4 @@
 import React from 'react'
-import commonStyles from '../../style/common'
 
 class ButtonComponent extends React.Component {
   constructor(props) {
@@ -12,6 +11,7 @@ class ButtonComponent extends React.Component {
           className="form-control"
           style={this.props.componentStyle}
           id={this.props.id}
+          disabled={this.props.disabled === true}
           value={this.props.buttonValue}/>
       </div>
     )

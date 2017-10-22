@@ -6,48 +6,116 @@ import filmStyles from '../../style/film'
 import { withRouter } from 'react-router-dom'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { selectMovie } from '../actions/movies'
+import { selectMovie, setMoviesByDirector, setActiveDirector } from '../actions/movies'
+import API from '../helpers/api'
+import DATES from '../helpers/dates'
+import IMG from '../helpers/img'
 
 // todo remake movies via fetch
 import movies from '../../../public/test_data/movies.json'
 
-class FilmHeader extends React.Component {
+const findDirector = DATES.findDirector;
+
+class CastInfo extends React.PureComponent {
   constructor(props) {
     super(props)
   }
+  getTextOfCast(castList) {
+    return castList.map(el => `${el.name} (${el.character})`)
+    .join(',')
+  }
+  render() {
+    return (
+      <div>
+        <p style={Object.assign({}, filmStyles.category, commonStyles.marginTop)}>
+          Director: {findDirector(this.props.castInfo.crew).name}
+        </p>
+        <p style={filmStyles.category}>Cast: {this.getTextOfCast(this.props.castInfo.cast)}</p>
+      </div>
+    )
+  }
+}
+
+class FilmHeader extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {};
+  }
   componentWillMount() {
-    if (this.props.selectedMovie) this.movie = this.props.selectedMovie
-    // if user hit the url from the link
-    this.foundMovie(this.props.match.params.title)
+    if (this.props.selectedMovie.id) {
+      this.getCredits(this.props.selectedMovie.id)
+    }
+    else {
+      // if user hit the url from the link
+      this.foundMovie(this.props.match.params.title) 
+    }
   }
   componentWillUpdate(props) {
-    if (props.selectedMovie) this.movie = props.selectedMovie
+    if (props.selectedMovie.credits && props.selectedMovie.credits.crew.length){
+      this.foundMoviesByDirector(findDirector(props.selectedMovie.credits.crew));
+    }
+  }
+  getCredits(id) {
+    API.getCredits(id)
+    .then(castInfo => {
+      this.setState({castInfo})
+      if (castInfo.crew.length) this.foundMoviesByDirector(findDirector(castInfo.crew))
+    })
   }
   foundMovie(title) {
-    var search = movies.filter(movie => movie.show_title === title)
-    if (search.length) this.movie = search[0]
+    API.getMovieDetails(title)
+    .then(movie => {
+      this.movie = movie && movie.id ? movie : {};
+      this.props.selectMovie(this.movie);
+      this.setState({castInfo: this.movie.credits});
+      if (this.movie.credits && this.movie.credits.crew.length) {
+        this.foundMoviesByDirector(findDirector(this.movie.credits.crew))
+      }
+    })
+    .catch(err => console.log(err))
+  }
+  foundMoviesByDirector(director) {
+    if (!director.id) return;
+    API.getMoviesByPerson(director.id)
+    .then(movies => {
+      if (movies.crew || movies.cast) {
+        const crew = movies.crew || [];
+        const cast = movies.cast || [];
+        const allMovies = crew.concat(cast);
+        const moviesWithoutDuplicates = DATES.removeDuplicatesByProperty(allMovies, 'id');
+        this.props.setMoviesByDirector(moviesWithoutDuplicates)
+      } else {
+        this.props.setMoviesByDirector([])
+      }
+      
+      this.props.setActiveDirector(director)
+    })
   }
   render() {
     return (
       <div>
         <Link style={commonStyles.ButtonLink} to='/'>Search</Link>
         <Row className="show-grid">
-          <Col xs={12} md={12} style={commonStyles.pageBlock}>
+          {this.props.selectedMovie.id && <Col xs={12} md={12} style={commonStyles.pageBlock}>
             <Col xs={5} sm={5} md={5}>
-              <img src={this.movie.poster} style={filmStyles.poster} />
+              {IMG.getImg(this.props.selectedMovie.poster_path)}
             </Col>
             <Col xs={12} sm={7} md={7} style={filmStyles.infoBlock}>
-              <p style={filmStyles.title}>{this.movie.show_title} <span style={filmStyles.rating}>{this.movie.rating}</span></p>
-              <p style={filmStyles.description}>{this.movie.category}</p>
-              <p style={filmStyles.info}>
-                <span style={commonStyles.inlineBlock}>{this.movie.release_year}</span>
-                <span style={commonStyles.inlineBlock}>{this.movie.runtime}</span>
+              <p style={filmStyles.title}>
+                {this.props.selectedMovie.title} 
+                <span style={filmStyles.rating}>{this.props.selectedMovie.vote_average}</span>
               </p>
-              <p style={Object.assign({}, filmStyles.description, commonStyles.marginTop)}>{this.movie.summary}</p>
-              <p style={Object.assign({}, filmStyles.category, commonStyles.marginTop)}>Director: {this.movie.director}</p>
-              <p style={filmStyles.category}>Cast: {this.movie.show_cast}</p>
+              <p style={filmStyles.description}>{this.props.selectedMovie.tagline}</p>
+              <p style={filmStyles.info}>
+                <span style={commonStyles.inlineBlock}>{DATES.dateStringToYear(this.props.selectedMovie.release_date)}</span>
+                {this.props.selectedMovie.runtime && <span style={commonStyles.inlineBlock}>{this.props.selectedMovie.runtime} minutes</span>}
+              </p>
+              <p style={Object.assign({}, filmStyles.description, commonStyles.marginTop)}>
+                {this.props.selectedMovie.overview}
+              </p>
+              {this.state.castInfo && <CastInfo castInfo={this.state.castInfo}></CastInfo>}
             </Col>
-          </Col>
+          </Col>}
         </Row>
       </div>
     )
@@ -56,13 +124,16 @@ class FilmHeader extends React.Component {
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
-    selectMovie
+    selectMovie,
+    setMoviesByDirector,
+    setActiveDirector
   }, dispatch);
 }
 
 function mapStateToProps(state) {
   return {
-    selectedMovie: state.selectedMovie
+    selectedMovie: state.selectedMovie,
+    search_active_criteria: state.search_active_criteria
   };
 }
 

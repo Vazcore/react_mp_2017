@@ -10,7 +10,7 @@ class FilmList extends React.Component {
   
   renderList(items) {
     return items.map(item => {
-      item.c_id = !item.c_id ? item.show_id : item.c_id;
+      item.c_id = !item.c_id ? item.id : item.c_id;
       return <FilmCard key={item.c_id} movie={item} onChoose={this.props.onChoose} />
     })
   }  
@@ -19,7 +19,7 @@ class FilmList extends React.Component {
     return (
       <Grid>
         <Row className="show-grid">
-          {this.renderList(this.props.movies)}
+          {this.props.movies ? this.renderList(this.props.movies) : null}
         </Row>
       </Grid>
     )
