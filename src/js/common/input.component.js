@@ -55,7 +55,7 @@ class InputComponent extends React.Component {
             this.props.icon &&
             <AbsoluteRightIcon src={this.props.icon} />
           }
-          {this.props.dropdownList && this.props.dropdownList.length &&
+          {this.props.dropdownList && this.props.dropdownList.length > 0 &&
             <DropDownList onDropDownItemClick={this.props.onDropDownItemClick} list={this.props.dropdownList}></DropDownList>
           }
         </RelativeDiv>

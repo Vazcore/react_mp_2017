@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DropdownList component DropdownList should render 1`] = `
+<ul
+  className="sc-bdVaJa jZQMDH"
+>
+  <li
+    className="sc-bwzfXH hbUAVr"
+    data-id={1}
+    data-name={undefined}
+    onClick={[Function]}
+  />
+  <li
+    className="sc-bwzfXH hbUAVr"
+    data-id={2}
+    data-name={undefined}
+    onClick={[Function]}
+  />
+  <li
+    className="sc-bwzfXH hbUAVr"
+    data-id={3}
+    data-name={undefined}
+    onClick={[Function]}
+  />
+</ul>
+`;

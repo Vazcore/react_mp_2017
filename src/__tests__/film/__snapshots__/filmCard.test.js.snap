@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FilmCard component FilmCard should render 1`] = `
+<span>
+  <span>
+    path1
+  </span>
+  <span>
+    <span>
+      Title1
+    </span>
+    <span>
+      <div
+        style={
+          Object {
+            "border": "1px solid #C8C8C8",
+            "borderRadius": "2px",
+            "color": "#4E4E4E",
+            "float": "right",
+            "fontWeight": "bold",
+            "textAlign": "center",
+            "width": "50px",
+          }
+        }
+      />
+    </span>
+    <span>
+      Horor
+    </span>
+  </span>
+</span>
+`;

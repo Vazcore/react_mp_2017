@@ -30,7 +30,7 @@ class CastInfo extends React.PureComponent {
         <p style={Object.assign({}, filmStyles.category, commonStyles.marginTop)}>
           Director: {findDirector(this.props.castInfo.crew).name}
         </p>
-        <p style={filmStyles.category}>Cast: {this.getTextOfCast(this.props.castInfo.cast)}</p>
+        {this.props.castInfo.cast && <p style={filmStyles.category}>Cast: {this.getTextOfCast(this.props.castInfo.cast)}</p>}
       </div>
     )
   }
@@ -42,7 +42,7 @@ class FilmHeader extends React.Component {
     this.state = {};
   }
   componentWillMount() {
-    if (this.props.selectedMovie.id) {
+    if (this.props.selectedMovie && this.props.selectedMovie.id) {
       this.getCredits(this.props.selectedMovie.id)
     }
     else {
@@ -63,7 +63,7 @@ class FilmHeader extends React.Component {
     })
   }
   foundMovie(title) {
-    API.getMovieDetails(title)
+    return API.getMovieDetails(title)
     .then(movie => {
       this.movie = movie && movie.id ? movie : {};
       this.props.selectMovie(this.movie);
@@ -71,12 +71,13 @@ class FilmHeader extends React.Component {
       if (this.movie.credits && this.movie.credits.crew.length) {
         this.foundMoviesByDirector(findDirector(this.movie.credits.crew))
       }
+      return this.movie;
     })
     .catch(err => console.log(err))
   }
   foundMoviesByDirector(director) {
     if (!director.id) return;
-    API.getMoviesByPerson(director.id)
+    return API.getMoviesByPerson(director.id)
     .then(movies => {
       if (movies.crew || movies.cast) {
         const crew = movies.crew || [];
