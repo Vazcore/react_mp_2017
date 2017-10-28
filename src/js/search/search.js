@@ -20,7 +20,7 @@ class Search extends React.Component {
     this.state= {movies: []}
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.searchMovies(this.props.match.params.keyword)
   }
 

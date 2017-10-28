@@ -2,7 +2,7 @@ import React from 'react'
 import API from './api'
 import filmStyles from '../../style/film'
 
-const logo_404 = require('../../../public/img/logo_404.jpg');
+const logo_404 = 'public/img/logo_404.jpg';
 
 export default {
   getImg(path) {

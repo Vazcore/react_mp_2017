@@ -11,9 +11,6 @@ import API from '../helpers/api'
 import DATES from '../helpers/dates'
 import IMG from '../helpers/img'
 
-// todo remake movies via fetch
-import movies from '../../../public/test_data/movies.json'
-
 const findDirector = DATES.findDirector;
 
 class CastInfo extends React.PureComponent {

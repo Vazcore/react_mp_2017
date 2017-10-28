@@ -9,10 +9,10 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { searchMovie, setActiveDirector } from '../actions/movies'
 import { changeSearchCriteria } from '../actions/criterias'
-
-import ArrowEnterIcon from '../../../public/img/arrow_enter.png'
 import commonStyles from '../../style/common'
 import API from '../helpers/api'
+
+const ArrowEnterIcon = 'public/img/arrow_enter.png'
 
 class SearchBar extends React.Component {
   constructor(props) {
