@@ -10,6 +10,7 @@ import { selectMovie, setMoviesByDirector, setActiveDirector } from '../actions/
 import API from '../helpers/api'
 import DATES from '../helpers/dates'
 import IMG from '../helpers/img'
+import { getMovieDetails, foundMoviesByDirector } from '../helpers/movies';
 
 const findDirector = DATES.findDirector;
 
@@ -37,41 +38,43 @@ class FilmHeader extends React.Component {
   constructor(props) {
     super(props)
     this.state = {};
+    this.currentStore = {
+      dispatch: this.props.dispatch,
+      getState: () => ({
+        selectedMovie: this.props.selectedMovie
+      })
+    };
   }
+  
+  static fetchData(store, match) {
+    return getMovieDetails(store, match);
+  }
+
   componentWillMount() {
     if (this.props.selectedMovie && this.props.selectedMovie.id) {
-      this.getCredits(this.props.selectedMovie.id)
-    }
-    else {
-      // if user hit the url from the link
-      this.foundMovie(this.props.match.params.title) 
-    }
+      this.getCredits(this.props.selectedMovie.id);
+    }    
   }
   componentWillUpdate(props) {
-    if (props.selectedMovie.credits && props.selectedMovie.credits.crew.length){
+    if (props.selectedMovie.credits && props.selectedMovie.credits.crew.length){      
       this.foundMoviesByDirector(findDirector(props.selectedMovie.credits.crew));
     }
   }
   getCredits(id) {
     API.getCredits(id)
     .then(castInfo => {
-      this.setState({castInfo})
+      this.setCastInfo(castInfo);
+      
       if (castInfo.crew.length) this.foundMoviesByDirector(findDirector(castInfo.crew))
     })
   }
-  foundMovie(title) {
-    return API.getMovieDetails(title)
-    .then(movie => {
-      this.movie = movie && movie.id ? movie : {};
-      this.props.selectMovie(this.movie);
-      this.setState({castInfo: this.movie.credits});
-      if (this.movie.credits && this.movie.credits.crew.length) {
-        this.foundMoviesByDirector(findDirector(this.movie.credits.crew))
-      }
-      return this.movie;
-    })
-    .catch(err => console.log(err))
+
+  setCastInfo(castInfo) {
+    let selectedMovie = this.props.selectedMovie || {};
+    selectedMovie.castInfo = castInfo;
+    this.props.selectMovie(selectedMovie);
   }
+
   foundMoviesByDirector(director) {
     if (!director.id) return;
     return API.getMoviesByPerson(director.id)
@@ -111,7 +114,7 @@ class FilmHeader extends React.Component {
               <p style={Object.assign({}, filmStyles.description, commonStyles.marginTop)}>
                 {this.props.selectedMovie.overview}
               </p>
-              {this.state.castInfo && <CastInfo castInfo={this.state.castInfo}></CastInfo>}
+              {this.props.selectedMovie.castInfo && <CastInfo castInfo={this.props.selectedMovie.castInfo}></CastInfo>}
             </Col>
           </Col>}
         </Row>
@@ -124,7 +127,8 @@ function matchDispatchToProps(dispatch) {
   return bindActionCreators({
     selectMovie,
     setMoviesByDirector,
-    setActiveDirector
+    setActiveDirector,
+    dispatch
   }, dispatch);
 }
 

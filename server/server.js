@@ -5,14 +5,16 @@ import render from './serverRender';
 app.use('/public', express.static('public'));
 app.use('/dist', express.static('dist'));
 
+app.get('/film/:title', function (req, res) {
+  render('film', req, res);
+});
+
 app.get('/search/:title/:mode', function (req, res) {
-  var html = render('search', req, res);
-  res.send(html);
+  render('search', req, res);
 });
 
 app.get('/', function (req, res) {
-  var html = render('main', req, res);
-  res.send(html);
+  render('main', req, res);
 });
 
 app.get('/api', function (req, res) {

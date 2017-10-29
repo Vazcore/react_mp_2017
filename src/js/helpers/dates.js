@@ -1,7 +1,7 @@
 const DATES = {};
 
 DATES.dateStringToYear = dateString => {
-  const date = new Date(dateString);
+  const date = dateString ? new Date(dateString) : new Date();
   return date.getFullYear();
 };
 

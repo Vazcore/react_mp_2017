@@ -2,6 +2,8 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
+import { matchRoutes } from 'react-router-config';
+import routes from '../src/js/routes';
 import { Provider } from 'react-redux';
 import App from '../src/js/app.js';
 import createStore from '../src/js/reducers/index';
@@ -35,23 +37,37 @@ function renderPage(html, state) {
 
 function serverRender(mode, req, res) {
   const context = {};
-  const store = createStore({});
-  const app = (
-    <Provider store={store}>
-      <StaticRouter location={req.url} context={context}>
-        <App />
-      </StaticRouter>
-    </Provider>
-  );
-  
-  const html = renderToString(app);
-  const state = store.getState();
-  console.log(req.url);
-  if (context.url) {
-    return res.redirect(context.url);
-  }
-  const page = renderPage(html, state);
-  return page;
+  const store = createStore();
+  const branches = matchRoutes(routes, req.url);
+  const promises = branches.map(({route, match}) => {
+    const {fetchData} = route.component;
+    //console.log(route.component);
+    if (!(fetchData instanceof Function)) {
+      return Promise.resolve(null);
+    }
+    return fetchData(store, match);
+  });
+
+  Promise.all(promises)
+  .then(() => {
+    const app = (
+      <Provider store={store}>
+        <StaticRouter location={req.url} context={context}>
+          <App />
+        </StaticRouter>
+      </Provider>
+    );
+    
+    const html = renderToString(app);
+    const state = store.getState();
+    //console.log(state);
+    
+    if (context.url) {
+      return res.redirect(context.url);
+    }
+    const page = renderPage(html, state);
+    res.send(page);
+  });  
 }
 
 
