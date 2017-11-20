@@ -4,8 +4,13 @@
   "description": "EPAM React Mentoring Program",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"webpack-dev-server\" \"nodemon server/server.js\"",
+    "start": "concurrently \"npm run clear && npm run watch_webpack\" \"npm run babelClient\" \"npm run babelServer\" \"npm run watch_server\"",
     "build": "webpack -p",
+    "watch_webpack": "webpack --watch",
+    "watch_server": "nodemon babeled/server/server.js",
+    "clear": "rimraf dist && rimraf babeled",
+    "babelClient": "node_modules/.bin/babel src -d babeled/src --watch",
+    "babelServer": "node_modules/.bin/babel server -d babeled/server --watch",
     "test": "jest --watch --coverage"
   },
   "keywords": [
@@ -39,12 +44,18 @@
     "webpack-dev-server": "^2.8.2"
   },
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "ejs": "^2.5.7",
+    "es6-promise": "^4.1.1",
+    "isomorphic-fetch": "^2.2.1",
     "react": "^16.0.0",
     "react-bootstrap": "^0.31.3",
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
+    "react-router-config": "^1.0.0-beta.4",
     "redux": "^3.7.2",
     "redux-form": "^7.0.4",
+    "rimraf": "^2.6.2",
     "styled-components": "^2.2.1"
   }
 }

@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { setSearchCriteria, setSortCriteria, changeSearchCriteria, changeSortCriteria } from './actions/criterias'
 import {search, sort } from './search/criterias'
+import 'isomorphic-fetch'
 
 const paddingReset = {paddingLeft: 0, paddingRight: 0};
 

@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux'
+import { combineReducers, createStore } from 'redux'
 import {movies, moviesByDirector, activeDirector } from './movies'
 import ActiveMovieReducer from './activeMovie'
 import {search_criteria, sort_criteria, search_active_criteria, sort_active_criteria} from './criterias'
@@ -17,4 +17,9 @@ const allReducers = combineReducers({
   activeDirector
 });
 
-export default allReducers;
+const getStore = function (initialState) {
+  const store = createStore(allReducers, initialState);
+  return store;
+}
+
+export default getStore;

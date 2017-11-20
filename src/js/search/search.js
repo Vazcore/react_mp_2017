@@ -10,6 +10,8 @@ import { changeSearchCriteria } from '../actions/criterias'
 import API from '../helpers/api';
 import DATES from '../helpers/dates';
 import { sort } from './criterias';
+import { searchMoviesMethod } from '../helpers/movies';
+
 
 class Search extends React.Component {
   constructor(props) {
@@ -17,65 +19,37 @@ class Search extends React.Component {
     this.onChoose = this.onChoose.bind(this)
     this.keyword = this.props.match.params.keyword
     this.criteria = this.props.match.params.criteria
-    this.state= {movies: []}
+    this.state= {movies: []};
+    this.currentStore = {
+      dispatch: this.props.dispatch,
+      getState: () => ({
+        movies: this.props.movies,
+        activeDirector: this.props.activeDirector,
+        search_criteria: this.props.search_criteria
+      })
+    };
   }
 
-  componentDidMount() {
-    this.searchMovies(this.props.match.params.keyword)
+  componentWillMount() {
+    searchMoviesMethod(
+      this.currentStore,
+      this.props.match
+    );
   }
 
   componentDidUpdate(props) {
     if (this.props.match.params.keyword !== this.keyword || this.criteria !== this.props.match.params.criteria) {
       this.keyword = this.props.match.params.keyword
       this.criteria = this.props.match.params.criteria
-      this.searchMovies(this.keyword)
+      searchMoviesMethod(
+        this.currentStore,
+        this.props.match
+      );
     }
   }
 
-  searchMovies(keyword) {
-    if (!this.criteria) {
-      this.criteria = this.props.search_active_criteria.prop
-    }
-    if (this.criteria === 'director') {
-      this.searchByDirector(keyword)
-    } else {
-      this.searchByTitle(keyword)
-    }
-    
-    this.props.changeSearchCriteria(this.props.search_criteria.filter(c=>c.prop===this.criteria)[0])
-    this.props.changeKeyword(this.keyword)
-  }
-
-  searchByDirector(name) {
-    const director = this.props.activeDirector;
-    if (director.id) {
-      this.getMoviesByDirector(director);
-    } else {
-      API.searchPerson(name)
-      .then(response => {
-        if (response.results && response.results.length) {
-          const person = response.results[0];
-          this.getMoviesByDirector(person);
-        }
-      })
-    }
-  }
-
-  getMoviesByDirector(director) {
-    API.getMoviesByPerson(director.id)
-    .then(movies => {
-      const moviesByDirector = DATES.findDirector(movies.crew, true)
-      if (moviesByDirector.length) this.props.searchMovie(moviesByDirector)
-    })
-  }
-
-  searchByTitle(title) {
-    API.findMovies(title)
-    .then(movies => {
-      const sortedMovies = DATES.sortMovies(movies, sort[1])
-      this.props.searchMovie(sortedMovies)
-    })
-    .catch(err => console.log(err))
+  static fetchData(store, match) {
+    return searchMoviesMethod(store, match);
   }
 
   onChoose(movie) {
@@ -97,7 +71,8 @@ function matchDispatchToProps(dispatch) {
     searchMovie,
     changeSearchCriteria,
     changeKeyword,
-    selectMovie
+    selectMovie,
+    dispatch
   }, dispatch);
 }
 

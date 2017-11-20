@@ -1,4 +1,4 @@
-const backgroundImage = require('../../public/img/header.jpg');
+const backgroundImage = 'public/img/header.jpg';
 
 export const HeaderBlock = {
   block: {

@@ -8,7 +8,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].bundle.[hash].js',
+    filename: '[name].bundle.js',
     publicPath: '/'
   },
   devServer: {
@@ -19,7 +19,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      filename: 'index.html',
+      filename: 'index.ejs',
       template: './public/index.html',
       inject: 'body',
       chunksSortMode: function(a, b) {
