@@ -104,6 +104,8 @@ export const getMovieDetails = (store, match) => {
           
           return resolve(movies);
         });
+      } else {
+        return resolve(null);
       }
     })
     .catch(e => reject(e));
